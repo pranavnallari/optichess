@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #define NAME "Optichess 1.0"
 #define BOARD_SQ_NUM 120
@@ -12,9 +13,10 @@
 
 typedef unsigned long long U64;
 
-enum PIECES {ALL, Pawn, Knight, Bishop, Rook, Queen, King};
-enum ROWS{ROW_A, ROW_B, ROW_C, ROW_D, ROW_E, ROW_F, ROW_G, ROW_H, ROW_NONE};
-enum COLS{COL_1 , COL_2, COL_3, COL_4, COL_5, COL_6, COL_7, COL_8, COL_NONE};
+enum PIECES {All, Pawn, Knight, Bishop, Rook, Queen, King};
+enum PIECELIST {wP, wN, wB, wR, wQ, wK, bP, bN, bB, bR, bQ, bK, EMPTY};
+enum ROWS{ROW_1, ROW_2, ROW_3, ROW_4, ROW_5, ROW_6, ROW_7, ROW_8, ROW_NONE};
+enum COLS{COL_A, COL_B, COL_C, COL_D, COL_E, COL_F, COL_G, COL_H, COL_NONE};
 enum COLOUR {WHITE, BLACK, BOTH};
 enum CASTLE {WKCA = 1, WQCA = 2, BKCA = 4, BQCA = 8}; // 4 bit number -> BQCA BKCA WQCA WKCA
 enum SQUARES {
@@ -49,22 +51,37 @@ typedef struct {
     int fiftyMoveCounter;
     int ply;
     int hisPly;
-    U64 posKey;
+    U64 posKey; // UID hashkey for each move in the game, useful for detecting repetition. 
     int castlePerm;
     S_UNDO history[MAXMOVES];
 
 } S_BOARD;
 
 #define RCToSQ(Row, Col) ((21 + Row) + (Col * 10)) // Given Row and Col to 120 indexed board
-
+#define SQUARE_MASK(sq) (1ULL << (sq))
+#define RAND_64 ((U64)rand() | (U64)rand() << 15 | (U64)rand() << 30 | (U64)rand() << 45 | ((U64)rand() &0xf) << 60)
+// variables
 extern int Board120To64[BOARD_SQ_NUM];
 extern int Board64To120[64];
-
+extern U64 PieceKeys[12][64];
+extern U64 SideKey;
+extern U64 CastleKeys[16];
+extern U64 EnPassant[8];
+//debug.c
+extern void PrintBoard120To64();
+extern void PrintBoard64To120();
 
 // init.c
 extern void AllInit();
 extern void InitBoard();
+extern void InitHashKeys();
 
+//bitboards.c
+extern void SetBit(U64 *bitboard, unsigned int sq);
+extern void ClearBit(U64 *bitboard, unsigned int sq);
+
+//poskey.c
+extern U64 GeneratePosKey(const S_BOARD *pos);
 
 #endif
 
