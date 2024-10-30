@@ -44,11 +44,12 @@ typedef struct {
 
 typedef struct {
     int board[BOARD_SQ_NUM]; // 120 sq board;
-    U64 piece[7][3];        // holds position of every piece in a 64 bit integer
+    U64 piece[12];        // holds position of every piece in a 64 bit integer
     int pieceNum[7][3]; // holds number of pieces
     int currSideToPlay;
     int enPas;
     int fiftyMoveCounter;
+    int fullmoveNumber;
     int ply;
     int hisPly;
     U64 posKey; // UID hashkey for each move in the game, useful for detecting repetition. 
@@ -60,6 +61,7 @@ typedef struct {
 #define RCToSQ(Row, Col) ((21 + Row) + (Col * 10)) // Given Row and Col to 120 indexed board
 #define SQUARE_MASK(sq) (1ULL << (sq))
 #define RAND_64 ((U64)rand() | (U64)rand() << 15 | (U64)rand() << 30 | (U64)rand() << 45 | ((U64)rand() &0xf) << 60)
+
 // variables
 extern int Board120To64[BOARD_SQ_NUM];
 extern int Board64To120[64];
@@ -67,9 +69,12 @@ extern U64 PieceKeys[12][64];
 extern U64 SideKey;
 extern U64 CastleKeys[16];
 extern U64 EnPassant[8];
+
 //debug.c
 extern void PrintBoard120To64();
 extern void PrintBoard64To120();
+extern void PrintHashKeys();
+extern void PrintBoard(const S_BOARD *brd);
 
 // init.c
 extern void AllInit();
@@ -82,6 +87,9 @@ extern void ClearBit(U64 *bitboard, unsigned int sq);
 
 //poskey.c
 extern U64 GeneratePosKey(const S_BOARD *pos);
+
+// board.c
+extern int ParseFEN(S_BOARD *state, const char *fen);
 
 #endif
 

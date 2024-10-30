@@ -39,7 +39,7 @@ U64 CastleKeys[16];
 void InitBoard() {
     for (int i = 0; i < BOARD_SQ_NUM; ++i) Board120To64[i] = 120;
     for (int i = 0; i < 64; ++i) Board64To120[i] = 69;
-
+    
     int sq120, sq64 = 0;
 
     for (int col = COL_A; col <= COL_H; ++col) {
@@ -51,6 +51,7 @@ void InitBoard() {
         }
     } 
 }
+
 
 void InitHashKeys() {
 	for (int piece = 0; piece < 12; ++piece) {
