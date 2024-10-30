@@ -31,14 +31,13 @@ void PrintHashKeys() {
     }
 }
 
-void PrintBoard(const S_BOARD *brd) {
+void PrintBoard(S_BOARD *brd) {
     const char pieceChar[] = ".PNBRQKpnbrqk";
     printf("\nBoard:\n\n");
-    
-    for (int rank = 8; rank >= 1; rank--) {
-        printf("%d  ", rank);
-        for (int file = 1; file <= 8; file++) {
-            int sq = RCToSQ(rank - 1, file - 1);
+    for (int col = 7; col >= 0; col--) {
+        printf("%d  ", col+1);
+        for (int row = 0; row <= 7; row++) {
+            int sq = RCToSQ(row, col);
             int piece = brd->board[sq];
             printf("%c ", pieceChar[piece]);
         }
@@ -72,5 +71,5 @@ void PrintBoard(const S_BOARD *brd) {
     printf("Fifty-move counter: %d\n", brd->fiftyMoveCounter);
     printf("Fullmove number: %d\n", brd->fullmoveNumber);
 
-    printf("Position key: %llx\n\n", brd->posKey);
+    printf("Position key: %llu\n\n", brd->posKey);
 }

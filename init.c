@@ -72,5 +72,7 @@ void InitHashKeys() {
 
 void AllInit() {
     InitBoard();
+    printf("Finished Initializing Board...\n");
     InitHashKeys();
+    printf("Finished Initializing HashKeys...\n");
 }

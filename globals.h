@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
+#include "FEN_TEST.h"
 
 #define NAME "Optichess 1.0"
 #define BOARD_SQ_NUM 120
@@ -13,8 +14,8 @@
 
 typedef unsigned long long U64;
 
-enum PIECES {All, Pawn, Knight, Bishop, Rook, Queen, King};
-enum PIECELIST {wP, wN, wB, wR, wQ, wK, bP, bN, bB, bR, bQ, bK, EMPTY};
+enum PIECES {All = 0, Pawn, Knight, Bishop, Rook, Queen, King};
+enum PIECELIST {EMPTY = 0, wP, wN, wB, wR, wQ, wK, bP, bN, bB, bR, bQ, bK};
 enum ROWS{ROW_1, ROW_2, ROW_3, ROW_4, ROW_5, ROW_6, ROW_7, ROW_8, ROW_NONE};
 enum COLS{COL_A, COL_B, COL_C, COL_D, COL_E, COL_F, COL_G, COL_H, COL_NONE};
 enum COLOUR {WHITE, BLACK, BOTH};
@@ -54,9 +55,11 @@ typedef struct {
     int hisPly;
     U64 posKey; // UID hashkey for each move in the game, useful for detecting repetition. 
     int castlePerm;
-    S_UNDO history[MAXMOVES];
+    // S_UNDO history[MAXMOVES];
 
 } S_BOARD;
+
+#define START_FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
 #define RCToSQ(Row, Col) ((21 + Row) + (Col * 10)) // Given Row and Col to 120 indexed board
 #define SQUARE_MASK(sq) (1ULL << (sq))
@@ -74,7 +77,7 @@ extern U64 EnPassant[8];
 extern void PrintBoard120To64();
 extern void PrintBoard64To120();
 extern void PrintHashKeys();
-extern void PrintBoard(const S_BOARD *brd);
+extern void PrintBoard(S_BOARD *brd);
 
 // init.c
 extern void AllInit();
@@ -90,6 +93,7 @@ extern U64 GeneratePosKey(const S_BOARD *pos);
 
 // board.c
 extern int ParseFEN(S_BOARD *state, const char *fen);
+extern int ResetBoard(S_BOARD *board, const char *fen);
 
 #endif
 

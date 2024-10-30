@@ -3,7 +3,7 @@
 
 #include "globals.h"
 
-const char* startfen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+
 
 /*
 6 fields
@@ -14,18 +14,26 @@ const char* startfen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
 5. HalfMove clock
 6. FullMove clock
 */
+
 int ParseFEN(S_BOARD *state, const char *fen) {
+    if (fen == NULL) {
+        printf("[Error] :- NULL FEN...!\n");
+        return -1;
+    }
+    if (state == NULL) {
+        printf("[Error] :- NULL State...!\n");
+        return -2;
+    }
     int piece;
     int sq = A8; // Start at A8 in 120-based board index
     int empty_sq;
     int i = 0;
-    
+
     // 1. Parse piece placement
-    memset(state->board, EMPTY, sizeof(state->board));
+    printf("Parsing 1. Piece Placement...\n");
     while (fen[i] && fen[i] != ' ') {
         piece = EMPTY;
         empty_sq = -1;
-
         switch (fen[i]) {
             case 'r': piece = bR; break;
             case 'n': piece = bN; break;
@@ -38,28 +46,30 @@ int ParseFEN(S_BOARD *state, const char *fen) {
             case 'B': piece = wB; break;
             case 'Q': piece = wQ; break;
             case 'K': piece = wK; break;
+            case 'P': piece = wP; break;
             case '1': case '2': case '3': case '4':
             case '5': case '6': case '7': case '8':
-                empty_sq = fen[i] - '0'; break;
+                empty_sq = fen[i] - '0';
+                sq += empty_sq;
+                break;
             case '/': 
-                sq -= 16;
-                continue;
+                sq -= 18;
+                break;
             default:
-                return -1; // Invalid FEN character
+                printf("Invalid character in FEN: %c\n", fen[i]);
+                return -1;
         }
         if (piece != EMPTY) {
             state->board[sq++] = piece;
-        } else if (empty_sq > -1) {
-            for (int j = 0; j < empty_sq; j++) {
-                state->board[sq++] = EMPTY;
-            }
         }
         i++;
     }
+
     if (fen[i] != ' ') return -1;
-    i++;
+    i++;   
 
     // 2. Active Colour
+    printf("Parsing 2. Active Colour...\n");
     if (fen[i] == 'w') {
         state->currSideToPlay = WHITE;
     } else if (fen[i] == 'b') {
@@ -73,6 +83,7 @@ int ParseFEN(S_BOARD *state, const char *fen) {
     i++;
 
     // 3. Castling Availability
+    printf("Parsing 3. Castling Availability...\n");
     state->castlePerm = 0;
     while (fen[i] != ' ') {
         switch(fen[i]) {
@@ -88,6 +99,7 @@ int ParseFEN(S_BOARD *state, const char *fen) {
     i++;
 
     // 4. EnPassant Square
+    printf("Parsing 4. EnPassant Square...\n");
     if (fen[i] == '-') {
         state->enPas = NO_SQ;
         i++;
@@ -96,7 +108,7 @@ int ParseFEN(S_BOARD *state, const char *fen) {
         int rank = fen[i + 1] - '1';
 
         if (file >= 0 && file <= 7 && rank >= 0 && rank <= 7) {
-            state->enPas = RCToSQ(rank, file);
+            state->enPas = RCToSQ(file, rank);
             i += 2;
         } else {
             return -1;
@@ -105,6 +117,7 @@ int ParseFEN(S_BOARD *state, const char *fen) {
     i++;
 
     // 5. HalfMove Counter
+    printf("Parsing 5. HalfMove Counter...\n");
     state->fiftyMoveCounter = 0;
     while (fen[i] != ' ' && fen[i] != '\0') {
         if (fen[i] < '0' || fen[i] > '9') return -1;
@@ -114,12 +127,40 @@ int ParseFEN(S_BOARD *state, const char *fen) {
     i++;
 
     // 6. Fullmove Number
+    printf("Parsing 6. FullMove Counter...\n");
     state->fullmoveNumber = 0;
     while (fen[i] != '\0') {
         if (fen[i] < '0' || fen[i] > '9') return -1;
         state->fullmoveNumber = state->fullmoveNumber * 10 + (fen[i] - '0');
         i++;
     }
-
+    printf("Parsed FEN successfully\n");
     return 1; // Success
+}
+
+
+// we need to reset to starting fen
+int ResetBoard(S_BOARD *board, const char* fen) {
+    if (board == NULL) {
+        return -1;
+    }
+
+    memset(board, 0, sizeof(S_BOARD));
+
+    board->currSideToPlay = WHITE;
+    board->enPas = NO_SQ;
+    board->fiftyMoveCounter = 0;
+    board->fullmoveNumber = 1;
+    board->ply = 0;
+    board->hisPly = 0;
+    board->castlePerm = 0;
+    memset(board->board, EMPTY, sizeof(board->board));
+    printf("Parsing FEN...\n");
+    if (ParseFEN(board, fen) < 0) {
+        printf("Error initializing board from FEN\n");
+        return -1;
+    }
+    printf("Generating Poskey...\n");
+    board->posKey = GeneratePosKey((const S_BOARD *)board);
+    return 0;
 }
