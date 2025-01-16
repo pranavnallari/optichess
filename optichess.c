@@ -11,6 +11,9 @@ int main(void) {
     }
 
     PrintBoard(&state);
+
+    printf("%d\n", is_square_attacked(A6, BLACK, &state));
+
     return EXIT_SUCCESS;
 }
     

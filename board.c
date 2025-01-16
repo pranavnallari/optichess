@@ -154,7 +154,7 @@ int ResetBoard(S_BOARD *board, const char* fen) {
     board->ply = 0;
     board->hisPly = 0;
     board->castlePerm = 0;
-    memset(board->board, EMPTY, sizeof(board->board));
+    memset(board->board, 0, sizeof(board->board));
     printf("Parsing FEN...\n");
     if (ParseFEN(board, fen) < 0) {
         printf("Error initializing board from FEN\n");

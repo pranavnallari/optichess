@@ -10,6 +10,9 @@
 #define NAME "Optichess 1.0"
 #define BOARD_SQ_NUM 120
 
+#define TRUE 1
+#define FALSE 0
+
 #define MAXMOVES 2048
 
 typedef unsigned long long U64;
@@ -64,7 +67,7 @@ typedef struct {
 #define RCToSQ(Row, Col) ((21 + Row) + (Col * 10)) // Given Row and Col to 120 indexed board
 #define SQUARE_MASK(sq) (1ULL << (sq))
 #define RAND_64 ((U64)rand() | (U64)rand() << 15 | (U64)rand() << 30 | (U64)rand() << 45 | ((U64)rand() &0xf) << 60)
-
+#define OFFBOARD(sq) ((Board120To64[sq] == 120) ? TRUE : FALSE)
 // variables
 extern int Board120To64[BOARD_SQ_NUM];
 extern int Board64To120[64];
@@ -95,5 +98,7 @@ extern U64 GeneratePosKey(const S_BOARD *pos);
 extern int ParseFEN(S_BOARD *state, const char *fen);
 extern int ResetBoard(S_BOARD *board, const char *fen);
 
+// attack.c
+extern int is_square_attacked(const int sq120, const int colour, const S_BOARD *pos);
 #endif
 
