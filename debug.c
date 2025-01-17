@@ -73,3 +73,44 @@ void PrintBoard(S_BOARD *brd) {
 
     printf("Position key: %llu\n\n", brd->posKey);
 }
+
+const char *PrintSquare(const int sq) {
+    static char PrSqr[3];
+
+    int col = (sq % 10) - 1;
+    int row = (sq / 10) - 2;
+
+    PrSqr[0] = (char)('A' + col);
+    PrSqr[1] = (char)('1' + row);
+    PrSqr[2] = '\0';
+
+    return PrSqr;
+}
+
+char *PrintMove(const int move) {
+    static char MoveStr[6];
+
+    int from_col = (MOVE_FROM_SQ(move) % 10) - 1;
+    int from_row = (MOVE_FROM_SQ(move) / 10) - 2;
+
+    int to_col = (MOVE_TO_SQ(move) % 10) - 1;
+    int to_row = (MOVE_TO_SQ(move) / 10) - 2;
+
+    int promoted = MOVE_PROMOTED_PIECE(move);
+
+    if (promoted) {
+        char pc = 'Q';
+        if (promoted == wN || promoted == bN) {
+            pc = 'N';
+        } else if (promoted ==  bR || promoted == wR) {
+            pc = 'R';
+        } else if (promoted == bB || promoted == wB) {
+            pc = 'B';
+        }
+
+        sprintf(MoveStr, "%c%c%c%c%c", ('A'+from_col), ('1'+from_row),('A'+to_col), ('1'+to_row), pc);
+    } else {
+        sprintf(MoveStr, "%c%c%c%c", ('A'+from_col), ('1'+from_row),('A'+to_col), ('1'+to_row));
+    }
+    return MoveStr;
+}

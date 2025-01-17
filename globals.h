@@ -14,6 +14,8 @@
 #define FALSE 0
 
 #define MAXMOVES 2048
+#define MAXPOSITIONALMOVES 256  // Max no. of moves at a given position.
+
 
 typedef unsigned long long U64;
 
@@ -39,7 +41,33 @@ enum SQUARES {
 */
 
 typedef struct {
-    int move; // move like NF3, QC2, etc.... I might just store the fen to make it easier. Will see
+    int move;
+    int score;
+} S_MOVE;
+
+
+/*
+    Move Representation (24bits)
+    CastleFlag  PromotedPiece PawnStart EnPassantFlag  CapturedPiece  To          From
+    (1bit)      (4bits)       (1bit)    (1bit)         (4bits)       (7bits)     (7bits)
+                0000 0000 0000 0000 0000 0000 
+    For reference
+    0-6 -> From
+    7-13 -> To
+    14->17-> Captured Piece
+    18 -> EnPassantFlag
+    19 -> Pawn Start Flag
+    20-23 -> Promoted Piece
+    24 ->Castle Flag
+*/
+
+typedef struct {
+    S_MOVE moves[MAXPOSITIONALMOVES];
+    int move_count;
+} S_MOVELIST;
+
+typedef struct {
+    int move;
     int castlePerm;
     int enPas;
     int fiftyMoveCounter;
@@ -49,7 +77,8 @@ typedef struct {
 typedef struct {
     int board[BOARD_SQ_NUM]; // 120 sq board;
     U64 piece[12];        // holds position of every piece in a 64 bit integer
-    int pieceNum[7][3]; // holds number of pieces
+    int pieceNum[7][3]; // holds number of pieces at any given time
+    int pceSqList[13][10];  // holds the square of every piece on the board
     int currSideToPlay;
     int enPas;
     int fiftyMoveCounter;
@@ -68,6 +97,25 @@ typedef struct {
 #define SQUARE_MASK(sq) (1ULL << (sq))
 #define RAND_64 ((U64)rand() | (U64)rand() << 15 | (U64)rand() << 30 | (U64)rand() << 45 | ((U64)rand() &0xf) << 60)
 #define OFFBOARD(sq) ((Board120To64[sq] == 120) ? TRUE : FALSE)
+
+/* Move Order MACROS */
+
+#define MOVE_FROM_SQ(m)                     (m & 0x7F)                // From Square (bits 0-6)
+#define MOVE_TO_SQ(m)                       ((m >> 7) & 0x7F)         // To Square (bits 7-13)
+#define MOVE_CAPTURED_PIECE(m)              ((m >> 14) & 0xF)         // Captured Piece (bits 14-17)
+#define MOVE_FLAG_ENPASSANT(m)              (m & 0x40000)             // En Passant Flag (bit 18)
+#define MOVE_FLAG_PAWN_START(m)             (m & 0x80000)             // Pawn Start Flag (bit 19)
+#define MOVE_PROMOTED_PIECE(m)              ((m >> 20) & 0xF)         // Promoted Piece (bits 20-23)
+#define MOVE_FLAG_CASTLE(m)                 (m & 0x1000000)           // Castle Flag (bit 24)
+
+
+#define MOVE_FLAG_ENPASSANT                 (0x40000)
+#define MOVE_FLAG_PAWN_START                (0x80000)
+#define MOVE_FLAG_CASTLE                    (0x1000000)
+
+
+#define SET_MOVE(f, t, ca, pr, fl)          ((f) | ((t) << 7) | ((ca) << 14) | ((pr) << 20) | (fl))
+
 // variables
 extern int Board120To64[BOARD_SQ_NUM];
 extern int Board64To120[64];
