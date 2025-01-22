@@ -23,7 +23,7 @@ enum PIECES {All = 0, Pawn, Knight, Bishop, Rook, Queen, King};
 enum PIECELIST {EMPTY = 0, wP, wN, wB, wR, wQ, wK, bP, bN, bB, bR, bQ, bK};
 enum ROWS{ROW_1, ROW_2, ROW_3, ROW_4, ROW_5, ROW_6, ROW_7, ROW_8, ROW_NONE};
 enum COLS{COL_A, COL_B, COL_C, COL_D, COL_E, COL_F, COL_G, COL_H, COL_NONE};
-enum COLOUR {WHITE, BLACK, BOTH};
+enum COLOUR {WHITE, BLACK, BOTH, NONE};
 enum CASTLE {WKCA = 1, WQCA = 2, BKCA = 4, BQCA = 8}; // 4 bit number -> BQCA BKCA WQCA WKCA
 enum SQUARES {
     A1 = 21, B1, C1, D1, E1, F1, G1, H1,
@@ -135,6 +135,9 @@ extern void AllInit();
 extern void InitBoard();
 extern void InitHashKeys();
 
+//data.c
+extern int PieceToColour[13];
+
 //bitboards.c
 extern void SetBit(U64 *bitboard, unsigned int sq);
 extern void ClearBit(U64 *bitboard, unsigned int sq);
@@ -148,5 +151,8 @@ extern int ResetBoard(S_BOARD *board, const char *fen);
 
 // attack.c
 extern int is_square_attacked(const int sq120, const int colour, const S_BOARD *pos);
+
+//genmove.c
+extern void generate_all_moves(S_BOARD *pos, S_MOVELIST *mvlist);
 #endif
 
