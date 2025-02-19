@@ -114,3 +114,71 @@ char *PrintMove(const int move) {
     }
     return MoveStr;
 }
+
+
+void PrintMoveList(const S_MOVELIST *list) {
+    printf("MoveList\n\n");
+    for (int i = 0; i < list->move_count; ++i) {
+        int move = list->moves[i].move;
+        int score = list->moves[i].score;
+
+        printf("Move : %d > %s  (score : %d)\n", i+1, PrintMove(move), score);
+    }
+}
+
+#include <stdio.h>
+#include "globals.h"
+
+void DebugPrintBoard(const S_BOARD *board) {
+    // Print a header
+    printf("=== S_BOARD Debug Info ===\n");
+
+    // Print the 120-square board array
+    printf("Board Array (120-sq):\n");
+    for (int i = 0; i < BOARD_SQ_NUM; i++) {
+        // Print 10 values per line for readability
+        if (i % 10 == 0)
+            printf("\n");
+        printf("%4d", board->board[i]);
+    }
+    printf("\n\n");
+
+    // Print bitboards for each piece type
+    printf("Bitboards (piece[12]):\n");
+    for (int i = 0; i < 12; i++) {
+        printf("Piece %2d: 0x%llx\n", i+1, board->piece[i]);
+    }
+    printf("\n");
+
+    // Print piece numbers (pieceNum[7][3])
+    printf("Piece Numbers (pieceNum[7][3]):\n");
+    for (int type = 0; type < 7; type++) {
+        for (int col = 0; col < 3; col++) {
+            printf("%4d ", board->pieceNum[type][col]);
+        }
+        printf("\n");
+    }
+    printf("\n");
+
+    // Print piece square list (pceSqList[13][10])
+    printf("Piece Square List (pceSqList[13][10]):\n");
+    for (int p = 0; p < 13; p++) {
+        printf("Piece index %2d: ", p);
+        for (int j = 0; j < 10; j++) {
+            printf("%4d ", board->pceSqList[p][j]);
+        }
+        printf("\n");
+    }
+    printf("\n");
+
+    // Print other board metadata
+    printf("Current Side To Play: %s\n", board->currSideToPlay == WHITE ? "WHITE" : "BLACK");
+    printf("En Passant Square: %d\n", board->enPas);
+    printf("Fifty Move Counter: %d\n", board->fiftyMoveCounter);
+    printf("Fullmove Number: %d\n", board->fullmoveNumber);
+    printf("Ply: %d, History Ply: %d\n", board->ply, board->hisPly);
+    printf("Position Key: 0x%llx\n", board->posKey);
+    printf("Castle Permissions: %d\n", board->castlePerm);
+
+    printf("=== End of Board Debug Info ===\n");
+}

@@ -109,9 +109,9 @@ typedef struct {
 #define MOVE_FLAG_CASTLE(m)                 (m & 0x1000000)           // Castle Flag (bit 24)
 
 
-#define MOVE_FLAG_ENPASSANT                 (0x40000)
-#define MOVE_FLAG_PAWN_START                (0x80000)
-#define MOVE_FLAG_CASTLE                    (0x1000000)
+#define SET_MOVE_FLAG_ENPASSANT                 (0x40000)
+#define SET_MOVE_FLAG_PAWN_START                (0x80000)
+#define SET_MOVE_FLAG_CASTLE                    (0x1000000)
 
 
 #define SET_MOVE(f, t, ca, pr, fl)          ((f) | ((t) << 7) | ((ca) << 14) | ((pr) << 20) | (fl))
@@ -129,6 +129,8 @@ extern void PrintBoard120To64();
 extern void PrintBoard64To120();
 extern void PrintHashKeys();
 extern void PrintBoard(S_BOARD *brd);
+extern void PrintMoveList(const S_MOVELIST *list);
+extern void DebugPrintBoard(const S_BOARD *board);
 
 // init.c
 extern void AllInit();

@@ -5,15 +5,18 @@ int main(void) {
     AllInit();
     printf("Finished Initialzing...\n");
     S_BOARD state;
-    if (ResetBoard(&state, START_FEN) < 0) {
+    if (ResetBoard(&state, FEN_3) < 0) {
         printf("Failed to reset board.\n");
         return EXIT_FAILURE;
     }
-
     PrintBoard(&state);
 
-    printf("%d\n", is_square_attacked(A6, BLACK, &state));
 
+    S_MOVELIST list[1];
+    generate_all_moves(&state, list);
+    PrintMoveList(list);
+
+    
     return EXIT_SUCCESS;
 }
     
