@@ -5,7 +5,7 @@ int Board120To64[BOARD_SQ_NUM];
 int Board64To120[64];
 
 // hashing keys
-U64 PieceKeys[12][64];
+U64 PieceKeys[13][64];
 U64 SideKey;
 U64 EnPassant[8];
 U64 CastleKeys[16];
@@ -54,7 +54,7 @@ void InitBoard() {
 
 
 void InitHashKeys() {
-	for (int piece = 0; piece < 12; ++piece) {
+	for (int piece = 1; piece < 13; ++piece) {
         for (int sq = 0; sq < 64; ++sq) {
             PieceKeys[piece][sq] = RAND_64;
         }

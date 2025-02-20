@@ -5,7 +5,7 @@ int main(void) {
     AllInit();
     printf("Finished Initialzing...\n");
     S_BOARD state;
-    if (ResetBoard(&state, FEN_3) < 0) {
+    if (ResetBoard(&state, FEN_7) < 0) {
         printf("Failed to reset board.\n");
         return EXIT_FAILURE;
     }

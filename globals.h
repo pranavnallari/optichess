@@ -19,7 +19,6 @@
 
 typedef unsigned long long U64;
 
-enum PIECES {All = 0, Pawn, Knight, Bishop, Rook, Queen, King};
 enum PIECELIST {EMPTY = 0, wP, wN, wB, wR, wQ, wK, bP, bN, bB, bR, bQ, bK};
 enum ROWS{ROW_1, ROW_2, ROW_3, ROW_4, ROW_5, ROW_6, ROW_7, ROW_8, ROW_NONE};
 enum COLS{COL_A, COL_B, COL_C, COL_D, COL_E, COL_F, COL_G, COL_H, COL_NONE};
@@ -76,8 +75,8 @@ typedef struct {
 
 typedef struct {
     int board[BOARD_SQ_NUM]; // 120 sq board;
-    U64 piece[12];        // holds position of every piece in a 64 bit integer
-    int pieceNum[7][3]; // holds number of pieces at any given time
+    U64 piece[13];        // holds position of every piece in a 64 bit integer
+    int pieceNum[13]; // holds number of pieces at any given time
     int pceSqList[13][10];  // holds the square of every piece on the board
     int currSideToPlay;
     int enPas;
@@ -119,7 +118,8 @@ typedef struct {
 // variables
 extern int Board120To64[BOARD_SQ_NUM];
 extern int Board64To120[64];
-extern U64 PieceKeys[12][64];
+extern const char pieceChar[14];
+extern U64 PieceKeys[13][64];
 extern U64 SideKey;
 extern U64 CastleKeys[16];
 extern U64 EnPassant[8];
@@ -130,6 +130,7 @@ extern void PrintBoard64To120();
 extern void PrintHashKeys();
 extern void PrintBoard(S_BOARD *brd);
 extern void PrintMoveList(const S_MOVELIST *list);
+extern const char *PrintSquare(const int sq);
 extern void DebugPrintBoard(const S_BOARD *board);
 
 // init.c

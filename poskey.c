@@ -4,7 +4,7 @@
 
 U64 GeneratePosKey(const S_BOARD *pos) {
 	U64 key = 0;
-	for (int piece = 0; piece <  12; piece++) {
+	for (int piece = 1; piece <  13; piece++) {
 		U64 bitboard = pos->piece[piece];
 		while (bitboard) {
 			int sq = __builtin_ffsll(bitboard) - 1;

@@ -163,13 +163,9 @@ int ResetBoard(S_BOARD *board, const char* fen) {
     printf("Generating Poskey...\n");
     board->posKey = GeneratePosKey((const S_BOARD *)board);
 
-    for (int i = 0; i < 12; i++) {
+    for (int i = 0; i < 13; i++) {
         board->piece[i] = 0ULL;
-    }
-    for (int t = 0; t < 7; t++) {
-        for (int c = 0; c < 3; c++) {
-            board->pieceNum[t][c] = 0;
-        }
+        board->pieceNum[i] = 0;
     }
     for (int i = 0; i < 13; i++) {
         for (int j = 0; j < 10; j++) {
@@ -185,28 +181,15 @@ int ResetBoard(S_BOARD *board, const char* fen) {
         int sq64 = Board120To64[sq];
         if (sq64 == 120) continue;
         
-        SetBit(&board->piece[piece-1], sq);
+        SetBit(&board->piece[piece], sq);
 
-        int pType;
-        if (piece >= wP && piece <= wK) {
-            pType = piece;
-            board->pieceNum[pType][WHITE]++;
-        } else if (piece >= bP && piece <= bK) {
-            pType = piece - 6;
-            board->pieceNum[pType][BLACK]++;
-        } else {
-            continue;
-        }
-        board->pieceNum[pType][BOTH]++;
-        int idx = 0;
-        if (piece >= wP && piece <= wK) {
-            idx = board->pieceNum[piece][WHITE] - 1;
-        } else {
-            idx = board->pieceNum[piece - 6][BLACK] - 1;
-        }
+        board->pieceNum[piece]++;
+        /*---------------WRONG IMPLEMENTATION-------------------------------*/
+        int idx = board->pieceNum[piece] - 1;
         if (idx < 10) {
             board->pceSqList[piece][idx] = sq;
         }
+        /*---------------FIX SOON!!!!!!!!!!!-------------------------------*/
     }
     return 0;
 }

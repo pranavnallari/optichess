@@ -2,20 +2,8 @@
 #define FEN_2 "rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 2"
 #define FEN_3 "rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2"
 
-#define ATTACK_FEN_1 "8/8/8/8/8/3p4/8/8 w - - 0 1" // Black pawn attacking e2
-#define ATTACK_FEN_2 "8/8/8/8/3P4/8/8/8 w - - 0 1" // White pawn attacking e5
-#define ATTACK_FEN_3 "8/8/8/3n4/8/8/8/8 w - - 0 1" // Black knight attacking d5
-#define ATTACK_FEN_4 "8/8/8/8/3N4/8/8/8 w - - 0 1" // White knight attacking e6
-#define ATTACK_FEN_5 "8/8/8/1r6/8/3b4/8/8 w - - 0 1" // Black bishop attacking c5
-#define ATTACK_FEN_6 "8/8/8/8/8/3q4/8/8 w - - 0 1" // Black queen attacking d4
-#define ATTACK_FEN_7 "8/8/8/8/3r4/8/8/8 w - - 0 1" // Black rook attacking d5
-#define ATTACK_FEN_8 "8/8/8/8/3R4/8/8/8 w - - 0 1" // White rook attacking d6
-#define ATTACK_FEN_9 "8/8/8/8/8/3k4/8/8 w - - 0 1" // Black king attacking d5
-#define ATTACK_FEN_10 "8/8/8/8/3K4/8/8/8 w - - 0 1" // White king attacking e5
-#define ATTACK_FEN_11 "8/8/8/8/8/8/8/R7 w - - 0 1" // White rook attacking a8
-#define ATTACK_FEN_12 "8/8/8/8/8/8/8/1Q6 w - - 0 1" // White queen attacking a1
-#define ATTACK_FEN_13 "8/8/8/8/8/8/8/8 w - - 0 1" // Empty board, no attacks
-#define ATTACK_FEN_14 "8/8/8/8/3n4/8/8/8 w - - 0 1" // Black knight not attacking own square
-#define ATTACK_FEN_15 "8/8/8/8/3p4/8/8/8 w - - 0 1" // Black pawn not attacking own square
-#define ATTACK_FEN_16 "8/8/8/8/8/3b4/8/8 w - - 0 1" // Black bishop, square not on diagonal
-#define ATTACK_FEN_17 "8/8/8/8/8/3r4/8/8 w - - 0 1" // Black rook, square not in file/rank
+#define FEN_4 "r1bqkbnr/pppppppp/n7/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 1 2"  // Black knight on a6; white to move.
+#define FEN_5 "rnbqkbnr/pp1ppppp/2p5/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2"  // Black pawn on c6; white to move.
+#define FEN_6 "rnbqkbnr/pppp1ppp/8/4p3/8/5N2/PPPPPPPP/RNBQKB1R w KQkq - 1 3"  // Black pawn on e5; white knight developed.
+#define FEN_7 "r1bq1rk1/ppp2ppp/2n2n2/3pp3/4P3/2NP1N2/PPP2PPP/R1BQ1RK1 w - - 0 1"  // Complex middlegame position with central tension.
+#define FEN_8 "rnb2rk1/ppq2ppp/2p1pn2/3p4/3P4/2N1PN2/PPP1BPPP/R1BQK2R w KQ - 2 9"  // Position from a common opening structure.

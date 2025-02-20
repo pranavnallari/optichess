@@ -1,6 +1,8 @@
 // debug.c
 #include "globals.h"
 
+const char pieceChar[14] = ".PNBRQKpnbrqk";
+
 void PrintBoard120To64() {
     for (int i = 0; i < BOARD_SQ_NUM; ++i) {
         if (i % 10 == 0) printf("\n");
@@ -18,7 +20,7 @@ void PrintBoard64To120() {
 
 void PrintHashKeys() {
     printf("SideKey: %llu\n", SideKey);
-    for (int i = 0; i < 12; ++i) {
+    for (int i = 0; i < 13; ++i) {
         for (int j = 0; j < 64; ++j) {
             printf("PieceKey[%d][%d]: %llu\n", i, j, PieceKeys[i][j]);
         }
@@ -32,7 +34,7 @@ void PrintHashKeys() {
 }
 
 void PrintBoard(S_BOARD *brd) {
-    const char pieceChar[] = ".PNBRQKpnbrqk";
+    
     printf("\nBoard:\n\n");
     for (int col = 7; col >= 0; col--) {
         printf("%d  ", col+1);
@@ -145,24 +147,21 @@ void DebugPrintBoard(const S_BOARD *board) {
 
     // Print bitboards for each piece type
     printf("Bitboards (piece[12]):\n");
-    for (int i = 0; i < 12; i++) {
+    for (int i = 1; i < 13; i++) {
         printf("Piece %2d: 0x%llx\n", i+1, board->piece[i]);
     }
     printf("\n");
 
-    // Print piece numbers (pieceNum[7][3])
-    printf("Piece Numbers (pieceNum[7][3]):\n");
-    for (int type = 0; type < 7; type++) {
-        for (int col = 0; col < 3; col++) {
-            printf("%4d ", board->pieceNum[type][col]);
-        }
-        printf("\n");
+    // Print piece numbers (pieceNum[13])
+    printf("Piece Numbers (pieceNum[13]):\n");
+    for (int i = 1; i < 13; i++) {
+        printf("%4d ", board->pieceNum[i]);
     }
     printf("\n");
 
     // Print piece square list (pceSqList[13][10])
     printf("Piece Square List (pceSqList[13][10]):\n");
-    for (int p = 0; p < 13; p++) {
+    for (int p = 1; p < 13; p++) {
         printf("Piece index %2d: ", p);
         for (int j = 0; j < 10; j++) {
             printf("%4d ", board->pceSqList[p][j]);
