@@ -1,8 +1,5 @@
-all:
-	gcc *.c -o optichess -Wall -Wextra -pedantic
-
 clean:
-	rm -rf optichess && clear
+	rm -rf build optichess && clear
 
 run:
-	./optichess
+	mkdir build && cd build && cmake .. && make && cp src/optichess ../
